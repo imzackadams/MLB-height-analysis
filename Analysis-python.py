@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[17]:
-
 
 import pandas as pd
 from pybaseball import batting_stats
@@ -30,19 +28,10 @@ for year in range(2015, 2023):  # 2023 is the stop argument and it's exclusive
 # Now 'all_years_data' holds data from 2012 to 2022
 
 
-# In[18]:
-
-
-all_years_data.head()
-
-
 # In[ ]:
 
 
-
-
-
-# In[19]:
+all_years_data.head()
 
 
 # Load the People.csv file from Lahman's Baseball Database
@@ -55,13 +44,10 @@ height_df = people_df[['playerID', 'height']]
 print(height_df)
 
 
-# In[20]:
-
 
 people_df['Name'] = people_df['nameFirst'] + ' ' + people_df['nameLast']
 
 
-# In[21]:
 
 
 # Remove leading/trailing white space
@@ -73,47 +59,40 @@ people_df['Name'] = people_df['Name'].str.title()
 all_years_data['Name'] = all_years_data['Name'].str.title()
 
 
-# In[22]:
 
 
 height_df = people_df[['Name', 'height']]
 
 
-# In[23]:
 
 
 height_df["height"].describe()
 
 
-# In[24]:
 
 
 all_data_with_height = pd.merge(all_years_data, height_df, on='Name', how='inner')
 
 
-# In[25]:
 
 
 all_data_with_height.tail()
 
 
-# In[26]:
 
 
 # Group# Group by 'Name' and 'height', calculate the mean, then reset index
-player_avg_data = all_data_with_height.groupby(['Name', 'height'])[['AVG', 'OBP', 'SLG', 'BB', 'IBB', 'SB']].mean().reset_index()
+player_avg_data = all_data_with_height.groupby(['Name', 'height'])[['AVG', 'OBP', 'SLG', 'BB', 'IBB', 'SB','HBP']].mean().reset_index()
 
 # Now 'player_avg_data' holds the average performance statistics for each player over the years 2012-2022, 
 # along with each player's height
 
 
-# In[27]:
 
 
 player_avg_data.describe()
 
 
-# In[28]:
 
 
 # Calculate the average height
@@ -122,8 +101,6 @@ average_height = height_df['height'].mean()
 # Display the average height
 print("Average height of players:", average_height)
 
-
-# In[29]:
 
 
 def height_category(height):
@@ -138,13 +115,11 @@ def height_category(height):
 player_avg_data['Height Category'] = player_avg_data['height'].apply(height_category)
 
 
-# In[30]:
 
 
 player_avg_data
 
 
-# In[31]:
 
 
 # Set up the matplotlib figure
@@ -171,7 +146,6 @@ axes[5].set_ylabel('Average Stolen Bases')
 plt.tight_layout()
 
 
-# In[32]:
 
 
 f, axes = plt.subplots(6, 1, figsize=(7, 15), sharex=True)
@@ -198,8 +172,6 @@ plt.tight_layout()
 
 
 
-# In[33]:
-
 
 f, axes = plt.subplots(6, 1, figsize=(7, 15), sharex=True)
 
@@ -224,35 +196,20 @@ axes[5].set_ylabel('Stolen Bases')
 plt.tight_layout()
 
 
-# In[34]:
-
 
 sns.pairplot(player_avg_data[['AVG', 'OBP', 'SLG', 'BB', 'IBB', 'SB', 'height']])
 
 
-# In[40]:
-
 
 # Scatter plot of AVG vs. OBP with green markers
-sns.scatterplot(x='AVG', y='OBP', hue='height', data=player_avg_data, color='green')
+sns.scatterplot(x='AVG', y='OBP', hue='height', data=player_avg_data, palette='Greens')
 plt.title('AVG vs. OBP')
 plt.show()
 
 # Scatter plot of SLG vs. BB with green markers
-sns.scatterplot(x='SLG', y='BB', hue='height', data=player_avg_data, color='green')
+sns.scatterplot(x='SLG', y='BB', hue='height', data=player_avg_data, palette='Greens')
 plt.title('SLG vs. BB')
 plt.show()
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 
 
